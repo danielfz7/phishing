@@ -1,101 +1,71 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+      import java.io.File;
+      import java.io.FileNotFoundException;
+      import java.util.HashMap;
+      import java.util.Map;
+      import java.util.Scanner;
 
-public class KeywordFinder {
+      public class PhishingApp {
 
-    public static void main(String[] args) {
+          public static void main(String[] args) {
+              String rutaArchivo = "C:/Users/Lucax/Desktop/escritorio/POO/frases y nombres.txt";
 
-        Map<String, Integer> keywords = new HashMap<>();
-keywords.put("Banco", 3);
-keywords.put("Paypal", 3);
-keywords.put("Correo electronico", 3);
-keywords.put("Tarjeta de credito", 3);
-keywords.put("Tarjeta de debito", 3);
-keywords.put("Contraseña", 3);
-keywords.put("Actualizacion de seguridad", 2);
-keywords.put("Verificacion de cuenta", 2);
-keywords.put("Phishing", 3);
-keywords.put("Fraude", 3);
-keywords.put("Spam", 2);
-keywords.put("Cuenta suspendida", 2);
-keywords.put("Oferta especial", 2);
-keywords.put("Ganador de premio", 2);
-keywords.put("Descuento", 2);
-keywords.put("Promocion", 2);
-keywords.put("Urgente", 3);
-keywords.put("Problema de facturacion", 2);
-keywords.put("Cambio de direccion", 1);
-keywords.put("Cambio de numero", 1);
-keywords.put("Cambio de correo", 1);
-keywords.put("Restablecimiento de contraseña", 2);
-keywords.put("Soporte tecnico", 2);
-keywords.put("Seguridad de la cuenta", 1);
-keywords.put("Prosesamiento de pago", 3);
-keywords.put("Banca en linea", 3);
-keywords.put("Confirmacion de pedido", 3);
-keywords.put("Compra sospechosa", 3);
-keywords.put("Verificacion de identidad", 1);
-keywords.put("Recuperacion de cuenta", 2);
+              Map<String, Integer> terminos = new HashMap<>();
+              terminos.put("Banco", 3);
+              terminos.put("Paypal", 3);
+              terminos.put("Correo electronico", 3);
+              terminos.put("Tarjeta de credito", 3);
+              terminos.put("Tarjeta de debito", 3);
+              terminos.put("Contraseña", 3);
+              terminos.put("Actualizacion de seguridad", 2);
+              terminos.put("Verificacion de cuenta", 2);
+              terminos.put("Phishing", 3);
+              terminos.put("Fraude", 3);
+              terminos.put("Spam", 2);
+              terminos.put("Cuenta suspendida", 2);
+              terminos.put("Oferta especial", 2);
+              terminos.put("Ganador de premio", 2);
+              terminos.put("Descuento", 2);
+              terminos.put("Promocion", 2);
+              terminos.put("Urgente", 3);
+              terminos.put("Problema de facturacion", 2);
+              terminos.put("Cambio de direccion", 1);
+              terminos.put("Cambio de numero", 1);
+              terminos.put("Cambio de correo", 1);
+              terminos.put("Restablecimiento de contraseña", 2);
+              terminos.put("Soporte tecnico", 2);
+              terminos.put("Seguridad de la cuenta", 1);
+              terminos.put("Prosesamiento de pago", 3);
+              terminos.put("Banca en linea", 3);
+              terminos.put("Confirmacion de pedido", 3);
+              terminos.put("Compra sospechosa", 3);
+              terminos.put("Verificacion de identidad", 1);
+              terminos.put("Recuperacion de cuenta", 2);
 
-      String filename = "archivo.txt";
+              int totalPuntos = 0;
+              int numOcurrencia = 0;
 
-              int totalPoints = 0;
-
-              try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
-
-                  String line;
-
-                  while ((line = reader.readLine()) != null) {
-
-                      for (String keyword : keywords.keySet()) {
-
-                          int count = countOccurrences(line, keyword);
-
-                          if (count > 0) {
-
-                              int points = count * keywords.get(keyword);
-
-                              System.out.println(keyword + ": " + count + " ocurrencias (" + points + " puntos)");
-
-                              totalPoints += points;
-
+              Scanner scanner = null; // aqui se le asigna un valor por defecto
+                      try {
+                          scanner = new Scanner(new File(rutaArchivo));
+                          while (scanner.hasNextLine()) {
+                              String line = scanner.nextLine();
+                              for (String termino : terminos.keySet()) {
+                                  if (line.contains(termino)) {
+                                      totalPuntos += terminos.get(termino);
+                                      numOcurrencia++;
+                                  }
+                              }
                           }
 
+                          System.out.println("Total points: " + totalPuntos); // imprime el total de puntos
+                          System.out.println("Number of occurrences: " + numOcurrencia); // imprime el numero de ocurrencias
+
+                      } catch (FileNotFoundException e) {
+                          System.err.println("File not found: " + rutaArchivo); // mensaje de error amigable para el usuario
+                      } finally {
+                          if (scanner != null) {
+                              scanner.close();
+                          }
                       }
-
                   }
-
-                  System.out.println("Total de puntos acumulados: " + totalPoints);
-
-              } catch (IOException e) {
-
-                  e.printStackTrace();
-
               }
-
-          }
-
-          private static int countOccurrences(String line, String word) {
-
-              String[] words = line.split("\\s+");
-
-              int count = 0;
-
-              for (String w : words) {
-
-                  if (w.equalsIgnoreCase(word)) {
-
-                      count++;
-
-                  }
-
-              }
-
-              return count;
-
-          }
-
-      }
