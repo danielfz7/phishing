@@ -1,0 +1,101 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+public class KeywordFinder {
+
+    public static void main(String[] args) {
+
+        Map<String, Integer> keywords = new HashMap<>();
+keywords.put("Banco", 3);
+keywords.put("Paypal", 3);
+keywords.put("Correo electronico", 3);
+keywords.put("Tarjeta de credito", 3);
+keywords.put("Tarjeta de debito", 3);
+keywords.put("Contraseña", 3);
+keywords.put("Actualizacion de seguridad", 2);
+keywords.put("Verificacion de cuenta", 2);
+keywords.put("Phishing", 3);
+keywords.put("Fraude", 3);
+keywords.put("Spam", 2);
+keywords.put("Cuenta suspendida", 2);
+keywords.put("Oferta especial", 2);
+keywords.put("Ganador de premio", 2);
+keywords.put("Descuento", 2);
+keywords.put("Promocion", 2);
+keywords.put("Urgente", 3);
+keywords.put("Problema de facturacion", 2);
+keywords.put("Cambio de direccion", 1);
+keywords.put("Cambio de numero", 1);
+keywords.put("Cambio de correo", 1);
+keywords.put("Restablecimiento de contraseña", 2);
+keywords.put("Soporte tecnico", 2);
+keywords.put("Seguridad de la cuenta", 1);
+keywords.put("Prosesamiento de pago", 3);
+keywords.put("Banca en linea", 3);
+keywords.put("Confirmacion de pedido", 3);
+keywords.put("Compra sospechosa", 3);
+keywords.put("Verificacion de identidad", 1);
+keywords.put("Recuperacion de cuenta", 2);
+
+      String filename = "archivo.txt";
+
+              int totalPoints = 0;
+
+              try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+
+                  String line;
+
+                  while ((line = reader.readLine()) != null) {
+
+                      for (String keyword : keywords.keySet()) {
+
+                          int count = countOccurrences(line, keyword);
+
+                          if (count > 0) {
+
+                              int points = count * keywords.get(keyword);
+
+                              System.out.println(keyword + ": " + count + " ocurrencias (" + points + " puntos)");
+
+                              totalPoints += points;
+
+                          }
+
+                      }
+
+                  }
+
+                  System.out.println("Total de puntos acumulados: " + totalPoints);
+
+              } catch (IOException e) {
+
+                  e.printStackTrace();
+
+              }
+
+          }
+
+          private static int countOccurrences(String line, String word) {
+
+              String[] words = line.split("\\s+");
+
+              int count = 0;
+
+              for (String w : words) {
+
+                  if (w.equalsIgnoreCase(word)) {
+
+                      count++;
+
+                  }
+
+              }
+
+              return count;
+
+          }
+
+      }
